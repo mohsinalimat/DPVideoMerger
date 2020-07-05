@@ -1,11 +1,42 @@
-# DPVideoMerger
+## DPVideoMerger
 
-For Swift :- https://github.com/Datt1994/DPVideoMerger-Swift
+**For Swift** :- [DPVideoMerger-Swift](https://github.com/Datt1994/DPVideoMerger-Swift)
 
-Step 1:-  Copy & paste DPVideoMerger.h & DPVideoMerger.m files into your project 
 
-Step 2:-  Usage 
+## Installation with CocoaPods
 
+[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C. You can install it with the following command:
+
+```bash
+$ gem install cocoapods
+```
+#### Podfile
+
+To integrate DPVideoMerger into your Xcode project using CocoaPods, specify it in your `Podfile`:
+
+```ruby
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+
+target 'TargetName' do
+pod 'DPVideoMerger'
+end
+```
+
+Then, run the following command:
+
+```bash
+$ pod install
+```
+
+
+## Add Manually 
+  
+  Download Project and copy-paste `DPVideoMerger.h` & `DPVideoMerger.m` files into your project 
+
+## Usage 
+
+```objc
     #import "DPVideoMerger.h"
     #import <AVKit/AVKit.h>
     #import <AVFoundation/AVFoundation.h>
@@ -35,3 +66,20 @@ Step 2:-  Usage
             [objAVPlayerVC.player play];
         }];
     }];
+    
+    [DPVideoMerger gridMergeVideosWithFileURLs:fileURLs andVideoResolution:CGSizeMake(2000, 2000) andRepeatVideo:true completion:^(NSURL *mergedVideoURL, NSError *error) {
+        if (error) {
+            NSString *errorMessage = [NSString stringWithFormat:@"Could not merge videos: %@", [error localizedDescription]];
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:errorMessage preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {}]];
+            [self presentViewController:alert animated:YES completion:nil];
+            return;
+        }
+        
+        AVPlayerViewController *objAVPlayerVC = [[AVPlayerViewController alloc] init];
+        objAVPlayerVC.player = [AVPlayer playerWithURL:mergedVideoURL];
+        [self presentViewController:objAVPlayerVC animated:YES completion:^{
+            [objAVPlayerVC.player play];
+        }];
+    }];
+```
